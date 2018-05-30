@@ -2,10 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>MessageBoard</title>
+        <title>Tasklist</title>
     </head>
 
     <body>
+        @include('commons.error_tasklists')
+        
         @yield('content')
     </body>
 </html>

@@ -46,7 +46,12 @@ class TasklistsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'content' => 'required|max:10',
+        ]);
+        
         $tasklist = new Tasklist;
+        $tasklist->status = $request-> status;
         $tasklist->content = $request->content;
         $tasklist->save();
 
@@ -91,14 +96,19 @@ class TasklistsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-   {
+    {
+        $this->validate($request, [
+            'status' => 'required|max:10',
+            ]);
+        
+        
         $tasklist = Tasklist::find($id);
+        $tasklist->status = $request->status;
         $tasklist->content = $request->content;
         $tasklist->save();
 
         return redirect('/');
     }
-    
 
     /**
      * Remove the specified resource from storage.
