@@ -97,6 +97,7 @@ class TasklistsController extends Controller
     public function edit($id)
     
     {
+        $tasklist = Tasklist::find($id);
      if (!empty($tasklist->user_id)) {
             if (\Auth::user()->id === $tasklist->user_id) {
            return view('tasklists.edit', [
@@ -144,10 +145,10 @@ class TasklistsController extends Controller
      */
     public function destroy($id)
     {
-        $tasklist = Tasklist::find($id);
+        $task = Tasklist::find($id);
         
-        if (\Auth::user()->id === $tasklist->user_id) {
-        $tasklist->delete();
+        if (\Auth::user()->id === $task->user_id) {
+        $task->delete();
             
         }
 
