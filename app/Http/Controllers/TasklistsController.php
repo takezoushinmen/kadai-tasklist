@@ -1,13 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Tasklist;    
-
 class TasklistsController extends Controller
 {
     /**
@@ -31,9 +26,7 @@ class TasklistsController extends Controller
         }else {
             return view('welcome');
         }
-
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -43,14 +36,12 @@ class TasklistsController extends Controller
     {
         if (\Auth::check()) {
         $tasklist = new Tasklist;
-
         return view('tasklists.create', [
             'tasklist' => $tasklist,
         ]);
         }
         return redirect('/');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -69,31 +60,38 @@ class TasklistsController extends Controller
         $tasklist->content = $request->content;
         $tasklist->user_id = \Auth::user()->id;
         $tasklist->save();
-
         return redirect('/');
     }
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+public function show($id)
     {
-     if (!empty($tasklist->user_id)) { 
-         $tasklist = Tasklist::find($id);
-        if (\Auth::check()) {
-            return view('tasklists.show', [
-                'tasklist' => $tasklist,
-            ]);   
-        }else {
+           if (\Auth::check()) {
+            $user = \Auth::user();
+            $tasklist = Tasklist::find($id);
+            
+            if ($tasklist->user_id == $user->id) {
+                 $tasklist = Tasklist::find($id);
+                
+                
+                return view('tasklists.show', [
+                    'tasklist' => $tasklist,
+                ]);
+                
+            } else {
+                // 一覧ページへリダイレクト
                 return redirect('/');
             }
-     }else {
-            return redirect('/');
-        }}
-
+        } else {
+            
+            //  welcome ページへリダイレクト
+            return view('welcome');
+    }
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -119,7 +117,6 @@ class TasklistsController extends Controller
             return redirect('/');
         }
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -139,10 +136,8 @@ class TasklistsController extends Controller
         $tasklist->status = $request->status;
         $tasklist->content = $request->content;
         $tasklist->save();
-
         return redirect('/');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -157,7 +152,6 @@ class TasklistsController extends Controller
         $task->delete();
             
         }
-
         return redirect('/');
     }
 }
