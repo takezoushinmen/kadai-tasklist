@@ -81,12 +81,18 @@ class TasklistsController extends Controller
      */
     public function show($id)
     {
-        $tasklist = Tasklist::find($id);
-
-        return view('tasklists.show', [
-            'tasklist' => $tasklist,
-        ]);           
-    }
+     if (!empty($tasklist->user_id)) { 
+         $tasklist = Tasklist::find($id);
+        if (\Auth::check()) {
+            return view('tasklists.show', [
+                'tasklist' => $tasklist,
+            ]);   
+        }else {
+                return redirect('/');
+            }
+     }else {
+            return redirect('/');
+        }}
 
     /**
      * Show the form for editing the specified resource.
